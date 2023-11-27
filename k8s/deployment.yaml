@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: airports-front
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: airports-front
+  template:
+    metadata:
+      labels:
+        name: airports-front
+    spec:
+      containers:
+      - name: airports-front
+        image: quay.io/rh_ee_slallema/airports-front:latest
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /q/health/ready
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 20
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /q/health/live
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 15
+          successThreshold: 1
+          timeoutSeconds: 20
+      terminationGracePeriodSeconds: 30
