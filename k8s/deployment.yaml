@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: airports-front
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       name: airports-front
